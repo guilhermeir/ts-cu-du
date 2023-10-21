@@ -159,7 +159,7 @@ void Model::setDistributedUnitAssignmentConstraints(){
             exp += (coeff * x_du[i][j]);
         }
         std::string name = "DU_Assignment(" + std::to_string(i) + ")";
-        constraints.add(IloRange(env, 1, exp, +IloInfinity, name.c_str()));
+        constraints.add(IloRange(env, 1, exp, 1, name.c_str()));
         exp.clear();
         exp.end();
     }
