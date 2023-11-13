@@ -59,6 +59,7 @@ class Model
 		/*** Formulation variables ***/
 		IloNumVarMatrix 	x_cu;           /**< Central Unit placement variables **/
 		IloNumVarMatrix 	x_du;           /**< Distributed Unit placement variables **/
+		IloNumVar3DMatrix 	z;           /**< Distributed Unit placement variables **/
 
 		/*** Manage execution and control ***/
 		IloNum time;
