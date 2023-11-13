@@ -63,66 +63,96 @@ Minimize
        + 22 x_du(9,7) + 25 x_du(9,6) + 27 x_du(9,5) + 24 x_du(9,4)
        + 30 x_du(9,3) + 15 x_du(9,2) + 25 x_du(9,1) + 14 x_du(9,0)
 Subject To
- CU_Assignment(0): x_cu(0,11) + x_cu(0,10) + x_cu(0,9) + x_cu(0,8) + x_cu(0,7)
-                   + x_cu(0,6) + x_cu(0,5) + x_cu(0,4) + x_cu(0,3) + x_cu(0,2)
-                   + x_cu(0,1) + x_cu(0,0)  = 1
- CU_Assignment(1): x_cu(1,11) + x_cu(1,10) + x_cu(1,9) + x_cu(1,8) + x_cu(1,7)
-                   + x_cu(1,6) + x_cu(1,5) + x_cu(1,4) + x_cu(1,3) + x_cu(1,2)
-                   + x_cu(1,1) + x_cu(1,0)  = 1
- CU_Assignment(2): x_cu(2,11) + x_cu(2,10) + x_cu(2,9) + x_cu(2,8) + x_cu(2,7)
-                   + x_cu(2,6) + x_cu(2,5) + x_cu(2,4) + x_cu(2,3) + x_cu(2,2)
-                   + x_cu(2,1) + x_cu(2,0)  = 1
- CU_Assignment(3): x_cu(3,11) + x_cu(3,10) + x_cu(3,9) + x_cu(3,8) + x_cu(3,7)
-                   + x_cu(3,6) + x_cu(3,5) + x_cu(3,4) + x_cu(3,3) + x_cu(3,2)
-                   + x_cu(3,1) + x_cu(3,0)  = 1
- CU_Assignment(4): x_cu(4,11) + x_cu(4,10) + x_cu(4,9) + x_cu(4,8) + x_cu(4,7)
-                   + x_cu(4,6) + x_cu(4,5) + x_cu(4,4) + x_cu(4,3) + x_cu(4,2)
-                   + x_cu(4,1) + x_cu(4,0)  = 1
- CU_Assignment(5): x_cu(5,11) + x_cu(5,10) + x_cu(5,9) + x_cu(5,8) + x_cu(5,7)
-                   + x_cu(5,6) + x_cu(5,5) + x_cu(5,4) + x_cu(5,3) + x_cu(5,2)
-                   + x_cu(5,1) + x_cu(5,0)  = 1
- CU_Assignment(6): x_cu(6,11) + x_cu(6,10) + x_cu(6,9) + x_cu(6,8) + x_cu(6,7)
-                   + x_cu(6,6) + x_cu(6,5) + x_cu(6,4) + x_cu(6,3) + x_cu(6,2)
-                   + x_cu(6,1) + x_cu(6,0)  = 1
- CU_Assignment(7): x_cu(7,11) + x_cu(7,10) + x_cu(7,9) + x_cu(7,8) + x_cu(7,7)
-                   + x_cu(7,6) + x_cu(7,5) + x_cu(7,4) + x_cu(7,3) + x_cu(7,2)
-                   + x_cu(7,1) + x_cu(7,0)  = 1
- CU_Assignment(8): x_cu(8,11) + x_cu(8,10) + x_cu(8,9) + x_cu(8,8) + x_cu(8,7)
-                   + x_cu(8,6) + x_cu(8,5) + x_cu(8,4) + x_cu(8,3) + x_cu(8,2)
-                   + x_cu(8,1) + x_cu(8,0)  = 1
- CU_Assignment(9): x_cu(9,11) + x_cu(9,10) + x_cu(9,9) + x_cu(9,8) + x_cu(9,7)
-                   + x_cu(9,6) + x_cu(9,5) + x_cu(9,4) + x_cu(9,3) + x_cu(9,2)
-                   + x_cu(9,1) + x_cu(9,0)  = 1
- DU_Assignment(0): x_du(0,11) + x_du(0,10) + x_du(0,9) + x_du(0,8) + x_du(0,7)
-                   + x_du(0,6) + x_du(0,5) + x_du(0,4) + x_du(0,3) + x_du(0,2)
-                   + x_du(0,1) + x_du(0,0) >= 1
- DU_Assignment(1): x_du(1,11) + x_du(1,10) + x_du(1,9) + x_du(1,8) + x_du(1,7)
-                   + x_du(1,6) + x_du(1,5) + x_du(1,4) + x_du(1,3) + x_du(1,2)
-                   + x_du(1,1) + x_du(1,0) >= 1
- DU_Assignment(2): x_du(2,11) + x_du(2,10) + x_du(2,9) + x_du(2,8) + x_du(2,7)
-                   + x_du(2,6) + x_du(2,5) + x_du(2,4) + x_du(2,3) + x_du(2,2)
-                   + x_du(2,1) + x_du(2,0) >= 1
- DU_Assignment(3): x_du(3,11) + x_du(3,10) + x_du(3,9) + x_du(3,8) + x_du(3,7)
-                   + x_du(3,6) + x_du(3,5) + x_du(3,4) + x_du(3,3) + x_du(3,2)
-                   + x_du(3,1) + x_du(3,0) >= 1
- DU_Assignment(4): x_du(4,11) + x_du(4,10) + x_du(4,9) + x_du(4,8) + x_du(4,7)
-                   + x_du(4,6) + x_du(4,5) + x_du(4,4) + x_du(4,3) + x_du(4,2)
-                   + x_du(4,1) + x_du(4,0) >= 1
- DU_Assignment(5): x_du(5,11) + x_du(5,10) + x_du(5,9) + x_du(5,8) + x_du(5,7)
-                   + x_du(5,6) + x_du(5,5) + x_du(5,4) + x_du(5,3) + x_du(5,2)
-                   + x_du(5,1) + x_du(5,0) >= 1
- DU_Assignment(6): x_du(6,11) + x_du(6,10) + x_du(6,9) + x_du(6,8) + x_du(6,7)
-                   + x_du(6,6) + x_du(6,5) + x_du(6,4) + x_du(6,3) + x_du(6,2)
-                   + x_du(6,1) + x_du(6,0) >= 1
- DU_Assignment(7): x_du(7,11) + x_du(7,10) + x_du(7,9) + x_du(7,8) + x_du(7,7)
-                   + x_du(7,6) + x_du(7,5) + x_du(7,4) + x_du(7,3) + x_du(7,2)
-                   + x_du(7,1) + x_du(7,0) >= 1
- DU_Assignment(8): x_du(8,11) + x_du(8,10) + x_du(8,9) + x_du(8,8) + x_du(8,7)
-                   + x_du(8,6) + x_du(8,5) + x_du(8,4) + x_du(8,3) + x_du(8,2)
-                   + x_du(8,1) + x_du(8,0) >= 1
- DU_Assignment(9): x_du(9,11) + x_du(9,10) + x_du(9,9) + x_du(9,8) + x_du(9,7)
-                   + x_du(9,6) + x_du(9,5) + x_du(9,4) + x_du(9,3) + x_du(9,2)
-                   + x_du(9,1) + x_du(9,0) >= 1
+ CU_Assignment(0)#0:  x_cu(0,11) + x_cu(0,10) + x_cu(0,9) + x_cu(0,8)
+                      + x_cu(0,7) + x_cu(0,6) + x_cu(0,5) + x_cu(0,4)
+                      + x_cu(0,3) + x_cu(0,2) + x_cu(0,1) + x_cu(0,0)  = 1
+ CU_Assignment(1)#1:  x_cu(1,11) + x_cu(1,10) + x_cu(1,9) + x_cu(1,8)
+                      + x_cu(1,7) + x_cu(1,6) + x_cu(1,5) + x_cu(1,4)
+                      + x_cu(1,3) + x_cu(1,2) + x_cu(1,1) + x_cu(1,0)  = 1
+ CU_Assignment(2)#2:  x_cu(2,11) + x_cu(2,10) + x_cu(2,9) + x_cu(2,8)
+                      + x_cu(2,7) + x_cu(2,6) + x_cu(2,5) + x_cu(2,4)
+                      + x_cu(2,3) + x_cu(2,2) + x_cu(2,1) + x_cu(2,0)  = 1
+ CU_Assignment(3)#3:  x_cu(3,11) + x_cu(3,10) + x_cu(3,9) + x_cu(3,8)
+                      + x_cu(3,7) + x_cu(3,6) + x_cu(3,5) + x_cu(3,4)
+                      + x_cu(3,3) + x_cu(3,2) + x_cu(3,1) + x_cu(3,0)  = 1
+ CU_Assignment(4)#4:  x_cu(4,11) + x_cu(4,10) + x_cu(4,9) + x_cu(4,8)
+                      + x_cu(4,7) + x_cu(4,6) + x_cu(4,5) + x_cu(4,4)
+                      + x_cu(4,3) + x_cu(4,2) + x_cu(4,1) + x_cu(4,0)  = 1
+ CU_Assignment(5)#5:  x_cu(5,11) + x_cu(5,10) + x_cu(5,9) + x_cu(5,8)
+                      + x_cu(5,7) + x_cu(5,6) + x_cu(5,5) + x_cu(5,4)
+                      + x_cu(5,3) + x_cu(5,2) + x_cu(5,1) + x_cu(5,0)  = 1
+ CU_Assignment(6)#6:  x_cu(6,11) + x_cu(6,10) + x_cu(6,9) + x_cu(6,8)
+                      + x_cu(6,7) + x_cu(6,6) + x_cu(6,5) + x_cu(6,4)
+                      + x_cu(6,3) + x_cu(6,2) + x_cu(6,1) + x_cu(6,0)  = 1
+ CU_Assignment(7)#7:  x_cu(7,11) + x_cu(7,10) + x_cu(7,9) + x_cu(7,8)
+                      + x_cu(7,7) + x_cu(7,6) + x_cu(7,5) + x_cu(7,4)
+                      + x_cu(7,3) + x_cu(7,2) + x_cu(7,1) + x_cu(7,0)  = 1
+ CU_Assignment(8)#8:  x_cu(8,11) + x_cu(8,10) + x_cu(8,9) + x_cu(8,8)
+                      + x_cu(8,7) + x_cu(8,6) + x_cu(8,5) + x_cu(8,4)
+                      + x_cu(8,3) + x_cu(8,2) + x_cu(8,1) + x_cu(8,0)  = 1
+ CU_Assignment(9)#9:  x_cu(9,11) + x_cu(9,10) + x_cu(9,9) + x_cu(9,8)
+                      + x_cu(9,7) + x_cu(9,6) + x_cu(9,5) + x_cu(9,4)
+                      + x_cu(9,3) + x_cu(9,2) + x_cu(9,1) + x_cu(9,0)  = 1
+ DU_Assignment(0)#10: x_du(0,11) + x_du(0,10) + x_du(0,9) + x_du(0,8)
+                      + x_du(0,7) + x_du(0,6) + x_du(0,5) + x_du(0,4)
+                      + x_du(0,3) + x_du(0,2) + x_du(0,1) + x_du(0,0)  = 1
+ DU_Assignment(1)#11: x_du(1,11) + x_du(1,10) + x_du(1,9) + x_du(1,8)
+                      + x_du(1,7) + x_du(1,6) + x_du(1,5) + x_du(1,4)
+                      + x_du(1,3) + x_du(1,2) + x_du(1,1) + x_du(1,0)  = 1
+ DU_Assignment(2)#12: x_du(2,11) + x_du(2,10) + x_du(2,9) + x_du(2,8)
+                      + x_du(2,7) + x_du(2,6) + x_du(2,5) + x_du(2,4)
+                      + x_du(2,3) + x_du(2,2) + x_du(2,1) + x_du(2,0)  = 1
+ DU_Assignment(3)#13: x_du(3,11) + x_du(3,10) + x_du(3,9) + x_du(3,8)
+                      + x_du(3,7) + x_du(3,6) + x_du(3,5) + x_du(3,4)
+                      + x_du(3,3) + x_du(3,2) + x_du(3,1) + x_du(3,0)  = 1
+ DU_Assignment(4)#14: x_du(4,11) + x_du(4,10) + x_du(4,9) + x_du(4,8)
+                      + x_du(4,7) + x_du(4,6) + x_du(4,5) + x_du(4,4)
+                      + x_du(4,3) + x_du(4,2) + x_du(4,1) + x_du(4,0)  = 1
+ DU_Assignment(5)#15: x_du(5,11) + x_du(5,10) + x_du(5,9) + x_du(5,8)
+                      + x_du(5,7) + x_du(5,6) + x_du(5,5) + x_du(5,4)
+                      + x_du(5,3) + x_du(5,2) + x_du(5,1) + x_du(5,0)  = 1
+ DU_Assignment(6)#16: x_du(6,11) + x_du(6,10) + x_du(6,9) + x_du(6,8)
+                      + x_du(6,7) + x_du(6,6) + x_du(6,5) + x_du(6,4)
+                      + x_du(6,3) + x_du(6,2) + x_du(6,1) + x_du(6,0)  = 1
+ DU_Assignment(7)#17: x_du(7,11) + x_du(7,10) + x_du(7,9) + x_du(7,8)
+                      + x_du(7,7) + x_du(7,6) + x_du(7,5) + x_du(7,4)
+                      + x_du(7,3) + x_du(7,2) + x_du(7,1) + x_du(7,0)  = 1
+ DU_Assignment(8)#18: x_du(8,11) + x_du(8,10) + x_du(8,9) + x_du(8,8)
+                      + x_du(8,7) + x_du(8,6) + x_du(8,5) + x_du(8,4)
+                      + x_du(8,3) + x_du(8,2) + x_du(8,1) + x_du(8,0)  = 1
+ DU_Assignment(9)#19: x_du(9,11) + x_du(9,10) + x_du(9,9) + x_du(9,8)
+                      + x_du(9,7) + x_du(9,6) + x_du(9,5) + x_du(9,4)
+                      + x_du(9,3) + x_du(9,2) + x_du(9,1) + x_du(9,0)  = 1
+ DU_Assignment(0)#20: x_du(0,11) + x_du(0,10) + x_du(0,9) + x_du(0,8)
+                      + x_du(0,7) + x_du(0,6) + x_du(0,5) + x_du(0,4)
+                      + x_du(0,3) + x_du(0,2) + x_du(0,1) + x_du(0,0)  = 1
+ DU_Assignment(1)#21: x_du(1,11) + x_du(1,10) + x_du(1,9) + x_du(1,8)
+                      + x_du(1,7) + x_du(1,6) + x_du(1,5) + x_du(1,4)
+                      + x_du(1,3) + x_du(1,2) + x_du(1,1) + x_du(1,0)  = 1
+ DU_Assignment(2)#22: x_du(2,11) + x_du(2,10) + x_du(2,9) + x_du(2,8)
+                      + x_du(2,7) + x_du(2,6) + x_du(2,5) + x_du(2,4)
+                      + x_du(2,3) + x_du(2,2) + x_du(2,1) + x_du(2,0)  = 1
+ DU_Assignment(3)#23: x_du(3,11) + x_du(3,10) + x_du(3,9) + x_du(3,8)
+                      + x_du(3,7) + x_du(3,6) + x_du(3,5) + x_du(3,4)
+                      + x_du(3,3) + x_du(3,2) + x_du(3,1) + x_du(3,0)  = 1
+ DU_Assignment(4)#24: x_du(4,11) + x_du(4,10) + x_du(4,9) + x_du(4,8)
+                      + x_du(4,7) + x_du(4,6) + x_du(4,5) + x_du(4,4)
+                      + x_du(4,3) + x_du(4,2) + x_du(4,1) + x_du(4,0)  = 1
+ DU_Assignment(5)#25: x_du(5,11) + x_du(5,10) + x_du(5,9) + x_du(5,8)
+                      + x_du(5,7) + x_du(5,6) + x_du(5,5) + x_du(5,4)
+                      + x_du(5,3) + x_du(5,2) + x_du(5,1) + x_du(5,0)  = 1
+ DU_Assignment(6)#26: x_du(6,11) + x_du(6,10) + x_du(6,9) + x_du(6,8)
+                      + x_du(6,7) + x_du(6,6) + x_du(6,5) + x_du(6,4)
+                      + x_du(6,3) + x_du(6,2) + x_du(6,1) + x_du(6,0)  = 1
+ DU_Assignment(7)#27: x_du(7,11) + x_du(7,10) + x_du(7,9) + x_du(7,8)
+                      + x_du(7,7) + x_du(7,6) + x_du(7,5) + x_du(7,4)
+                      + x_du(7,3) + x_du(7,2) + x_du(7,1) + x_du(7,0)  = 1
+ DU_Assignment(8)#28: x_du(8,11) + x_du(8,10) + x_du(8,9) + x_du(8,8)
+                      + x_du(8,7) + x_du(8,6) + x_du(8,5) + x_du(8,4)
+                      + x_du(8,3) + x_du(8,2) + x_du(8,1) + x_du(8,0)  = 1
+ DU_Assignment(9)#29: x_du(9,11) + x_du(9,10) + x_du(9,9) + x_du(9,8)
+                      + x_du(9,7) + x_du(9,6) + x_du(9,5) + x_du(9,4)
+                      + x_du(9,3) + x_du(9,2) + x_du(9,1) + x_du(9,0)  = 1
 Bounds
  0 <= x_cu(0,11) <= 1
  0 <= x_cu(0,10) <= 1

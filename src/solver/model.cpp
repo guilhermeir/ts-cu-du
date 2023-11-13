@@ -125,6 +125,7 @@ void Model::setConstraints(){
 
     setCentralUnitAssignmentConstraints();
     setDistributedUnitAssignmentConstraints();
+    setLinkCapacityConstraints();
 
     model.add(constraints);
     std::cout << "\t The constraint matrix has been set up! " << std::endl;
@@ -148,7 +149,7 @@ void Model::setCentralUnitAssignmentConstraints(){
     }
 }
 
-/* Set up the distributed unit assignment constraints: for each demand, at least one DU must be assigned. */
+/* Set up the distributed unit assignment constraints: for each demand, exactly one DU must be assigned. */
 void Model::setDistributedUnitAssignmentConstraints(){
     std::cout << "\t > Setting up distributed unit assignment constraints " << std::endl;
     for (int i = 0; i < data.getNbDemands(); i++){
@@ -165,6 +166,22 @@ void Model::setDistributedUnitAssignmentConstraints(){
     }
 }
 
+/* Set up the link capacity constraints: for each network link, the aggregated throughput must be smaller than its capacity */
+void Model::setLinkCapacityConstraints(){
+    std::cout << "\t > Setting up distributed unit assignment constraints " << std::endl;
+    for (int i = 0; i < data.getNbDemands(); i++){
+        IloExpr exp(env);
+        for (NodeIt n(data.getGraph()); n != lemon::INVALID; ++n){
+            int j = data.getNodeId(n);
+            double coeff = 1.0;
+            exp += (coeff * x_du[i][j]);
+        }
+        std::string name = "DU_Assignment(" + std::to_string(i) + ")";
+        constraints.add(IloRange(env, 1, exp, 1, name.c_str()));
+        exp.clear();
+        exp.end();
+    }
+}
 void Model::run()
 {
     cplex.exportModel("mip.lp");

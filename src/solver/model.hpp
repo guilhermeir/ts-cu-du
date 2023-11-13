@@ -102,6 +102,9 @@ class Model
         /** Set up the distributed unit assignment constraints: for each demand, at least one DU must be assigned. **/
         void setDistributedUnitAssignmentConstraints();
 
+		/* Set up the link capacity constraints: for each network link, the aggregated throughput must be smaller than its capacity */
+		void setLinkCapacityConstraints();
+
         /** Set up the Cplex parameters. **/
         void setCplexParameters();
 
