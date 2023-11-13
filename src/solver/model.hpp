@@ -109,6 +109,8 @@ class Model
 		/* Set up the link capacity constraints: for each network link, the aggregated throughput must be smaller than its capacity */
 		void setLinkCapacityConstraints();
 
+		void setPlacementConstraints();
+
         /** Set up the Cplex parameters. **/
         void setCplexParameters();
 

@@ -84,7 +84,7 @@ void Model::setLinearizationVariables(const int NB_DEMANDS, const int NB_NODES){
     z.resize(NB_DEMANDS);
     for (int i = 0; i < NB_DEMANDS; i++){
         z[i].resize(NB_NODES);
-        for (int ii = 0; ii < NB_DEMANDS; ii++){
+        for (int ii = 0; ii < NB_NODES; ii++){
             z[i][ii].resize(NB_NODES);
             for (NodeIt n(data.getGraph()); n != lemon::INVALID; ++n){
                 int j = data.getNodeId(n);
@@ -114,19 +114,23 @@ void Model::setObjective(){
     for (int i = 0; i < data.getNbDemands(); i++){
         for(NodeIt n(data.getGraph()); n != lemon::INVALID; ++n) {
             int j = data.getNodeId(n);
-            double cost = data.getCentralUnitPlacementCost(data.getNode(j));
-            exp += ( cost*x_cu[i][j] ); 
+            for(NodeIt nn(data.getGraph()); nn != lemon::INVALID; ++nn) {
+                int k = data.getNodeId(nn);
+                double costCU = data.getCentralUnitPlacementCost(data.getNode(j));
+                double costDU = data.getDistributedUnitPlacementCost(data.getNode(k));
+                exp += ( (costCU + costDU)*z[i][j][k] ); 
+            }
         }
     }
 
-    /* Distributed unit placement costs */
-    for (int i = 0; i < data.getNbDemands(); i++){
-        for(NodeIt n(data.getGraph()); n != lemon::INVALID; ++n) {
-            int j = data.getNodeId(n);
-            double cost = data.getDistributedUnitPlacementCost(data.getNode(j));
-            exp += ( cost*x_du[i][j] ); 
-        }
-    }
+    // /* Distributed unit placement costs */
+    // for (int i = 0; i < data.getNbDemands(); i++){
+    //     for(NodeIt n(data.getGraph()); n != lemon::INVALID; ++n) {
+    //         int j = data.getNodeId(n);
+    //         double cost = data.getDistributedUnitPlacementCost(data.getNode(j));
+    //         exp += ( cost*x_du[i][j] ); 
+    //     }
+    // }
 
 	obj.setExpr(exp);
 	obj.setSense(IloObjective::Minimize);
@@ -147,8 +151,9 @@ void Model::setConstraints(){
 
     std::cout << "\t Setting up constraints... " << std::endl;
 
-    setCentralUnitAssignmentConstraints();
-    setDistributedUnitAssignmentConstraints();
+    // setCentralUnitAssignmentConstraints();
+    // setDistributedUnitAssignmentConstraints();
+    setPlacementConstraints();
     setLinkCapacityConstraints();
 
     model.add(constraints);
@@ -190,22 +195,66 @@ void Model::setDistributedUnitAssignmentConstraints(){
     }
 }
 
-/* Set up the link capacity constraints: for each network link, the aggregated throughput must be smaller than its capacity */
-void Model::setLinkCapacityConstraints(){
-    std::cout << "\t > Setting up distributed unit assignment constraints " << std::endl;
+void Model::setPlacementConstraints(){
+    std::cout << "\t > Setting up central unit assignment constraints " << std::endl;
+
+    int numOfNodes = lemon::countNodes(data.getGraph());
+
+    int neighborhood[numOfNodes][numOfNodes]={0};
+
+    for (ArcIt l(data.getGraph()); l != lemon::INVALID; ++l){
+        int idx_i = data.getGraph().id(data.getGraph().source(l));
+        int idx_j = data.getGraph().id(data.getGraph().target(l));
+
+        neighborhood[idx_i][idx_j] = 1;
+    }
+
+    for (int i = 0; i < numOfNodes; i++){
+        neighborhood[i][i] = 1;
+    }
+
+    cout << "ok";
     for (int i = 0; i < data.getNbDemands(); i++){
         IloExpr exp(env);
         for (NodeIt n(data.getGraph()); n != lemon::INVALID; ++n){
-            int j = data.getNodeId(n);
-            double coeff = 1.0;
-            exp += (coeff * x_du[i][j]);
+            for (NodeIt nn(data.getGraph()); nn != lemon::INVALID; ++nn){
+                int j = data.getNodeId(n);
+                int k = data.getNodeId(nn);
+                exp += (neighborhood[j][k] * z[i][j][k]);
+            }
         }
-        std::string name = "DU_Assignment(" + std::to_string(i) + ")";
+        std::string name = "Placement(" + std::to_string(i) + ")";
         constraints.add(IloRange(env, 1, exp, 1, name.c_str()));
         exp.clear();
         exp.end();
     }
 }
+
+/* Set up the link capacity constraints: for each network link, the aggregated throughput must be smaller than its capacity */
+void Model::setLinkCapacityConstraints(){
+    std::cout << "\t > Setting up Link Capacity Constraints " << std::endl;
+
+    for (ArcIt l(data.getGraph()); l != lemon::INVALID; ++l){
+        IloExpr exp(env);
+
+        int j = data.getGraph().id(data.getGraph().source(l));
+        int k = data.getGraph().id(data.getGraph().target(l));
+        double mu = data.getGraph().id(l);
+
+        for (int i = 0; i < data.getNbDemands(); i++){
+            double lambda = data.getDemand(i).getThroughput();
+            exp += lambda * z[i][j][k];
+        }
+
+        std::string name = "Capacity of link(" + std::to_string(data.getGraph().id(l)) + ")";
+        constraints.add(IloRange(env, 0, exp, mu, name.c_str()));
+        exp.clear();
+        exp.end();
+    }
+}
+
+
+
 void Model::run()
 {
     cplex.exportModel("mip.lp");
@@ -222,11 +271,14 @@ void Model::printResult(){
     std::cout << "=> Printing solution ..." << std::endl;
     for (int i = 0; i < NB_DEMANDS; i++) {
         std::cout << std::endl << "----------------------------------------------------" << std::endl << std::endl;
-        std::cout << "i = " << i+1 << " has CU installed at nodes : ";
+        std::cout << "Placement for RU i = " << i+1 << " is : ";
         for (NodeIt n(data.getGraph()); n != lemon::INVALID; ++n){
-            int j = data.getNodeId(n);
-            if (cplex.getValue(x_cu[i][j]) > 1 - EPS){
-                std::cout << j << ", ";
+            for (NodeIt nn(data.getGraph()); nn != lemon::INVALID; ++nn){
+                int j = data.getNodeId(n);
+                int k = data.getNodeId(nn);
+                if (cplex.getValue(z[i][j][k]) > 1 - EPS){
+                    std::cout << "(" << j << "," << k << ")" << ", ";
+                }
             }
         }
         std::cout << std::endl << "and DU installed at nodes : ";
