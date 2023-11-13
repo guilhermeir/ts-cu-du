@@ -31,6 +31,7 @@ void Model::setVariables(){
     std::cout << "\t Setting up variables... " << std::endl;
     setCentralUnitPlacementVariables(NB_DEMANDS, NB_NODES);
     setDistributedUnitPlacementVariables(NB_DEMANDS, NB_NODES);
+    setLinearizationVariables(NB_DEMANDS, NB_NODES);
     std::cout << "\t All variables are set up! " << std::endl;
 }
 
@@ -76,6 +77,29 @@ void Model::setDistributedUnitPlacementVariables(const int NB_DEMANDS, const int
     }
 }
 
+/** Set up the distributed unit placement variables. **/
+void Model::setLinearizationVariables(const int NB_DEMANDS, const int NB_NODES){
+    /* Distributed Unit placement variables: x_du[i][j] = 1 if a Distributed Unit of demand i is placed on node j. */
+    std::cout << "\t >> Setting up Linearization variables. " << std::endl;
+    z.resize(NB_DEMANDS);
+    for (int i = 0; i < NB_DEMANDS; i++){
+        z[i].resize(NB_NODES);
+        for (int ii = 0; ii < NB_DEMANDS; ii++){
+            z[i][ii].resize(NB_NODES);
+            for (NodeIt n(data.getGraph()); n != lemon::INVALID; ++n){
+                int j = data.getNodeId(n);
+                std::string name = "z(" + std::to_string(i) + "," + std::to_string(ii) + "," + std::to_string(j) + ")";
+                if (data.getInput().isRelaxation()){
+                    z[i][ii][j] = IloNumVar(env, 0.0, 1.0, ILOFLOAT, name.c_str());
+                }
+                else{
+                    z[i][ii][j] = IloNumVar(env, 0.0, 1.0, ILOINT, name.c_str());
+                }
+                model.add(z[i][ii][j]);
+            }
+        }
+    }
+}
 
 /****************************************************************************************/
 /*									Objective Function									*/

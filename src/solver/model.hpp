@@ -85,6 +85,9 @@ class Model
         /** Set up the distributed unit placement variables. **/
         void setDistributedUnitPlacementVariables(const int NB_DEMANDS, const int NB_NODES);
 
+        /** Set up the linearization variables z. **/
+        void setLinearizationVariables(const int NB_DEMANDS, const int NB_NODES);
+
 	/****************************************************************************************/
 	/*									Objective Function									*/
 	/****************************************************************************************/
