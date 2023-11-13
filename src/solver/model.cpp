@@ -276,13 +276,15 @@ void Model::setLinkCapacityConstraints(){
 
         int j = data.getGraph().id(data.getGraph().source(l));
         int k = data.getGraph().id(data.getGraph().target(l));
-        double mu = data.getGraph().id(l);
-
+        double mu = data.getLink(data.getGraph().id(l)).getCapacity();
+        cout << j << " " << k << " " << mu;
         for (int ii = 0; ii < data.getNbDemands(); ii++){
             int i = data.getDemand(ii).getSource();
-            double lambda = data.getDemand(i).getThroughput();
+            double lambda = data.getDemand(ii).getThroughput();
+            cout << " " << lambda << " ";
             exp += lambda * z[i][j][k];
         }
+        cout << endl;
 
         std::string name = "Capacity of link(" + std::to_string(data.getGraph().id(l)) + ")";
         constraints.add(IloRange(env, 0, exp, mu, name.c_str()));
