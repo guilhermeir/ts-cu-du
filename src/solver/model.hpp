@@ -109,7 +109,12 @@ class Model
 		/* Set up the link capacity constraints: for each network link, the aggregated throughput must be smaller than its capacity */
 		void setLinkCapacityConstraints();
 
-		void setPlacementConstraints();
+		void setPlacementDUConstraints();
+		void setPlacementCUConstraints();
+
+		void setLinearityConstraints1();
+		void setLinearityConstraints2();
+		void setLinearityConstraints3();
 
         /** Set up the Cplex parameters. **/
         void setCplexParameters();

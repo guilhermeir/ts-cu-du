@@ -111,7 +111,8 @@ void Model::setObjective(){
     std::cout << "\t Setting up objective function... " << std::endl;
 	IloExpr exp(env);
     /* Central unit placement costs */
-    for (int i = 0; i < data.getNbDemands(); i++){
+    for (int ii = 0; ii < data.getNbDemands(); ii++){
+        int i = data.getDemand(ii).getSource();
         for(NodeIt n(data.getGraph()); n != lemon::INVALID; ++n) {
             int j = data.getNodeId(n);
             for(NodeIt nn(data.getGraph()); nn != lemon::INVALID; ++nn) {
@@ -153,8 +154,12 @@ void Model::setConstraints(){
 
     // setCentralUnitAssignmentConstraints();
     // setDistributedUnitAssignmentConstraints();
-    setPlacementConstraints();
+    setPlacementDUConstraints();
+    setPlacementCUConstraints();
     setLinkCapacityConstraints();
+    setLinearityConstraints1();
+    setLinearityConstraints2();
+    setLinearityConstraints3();
 
     model.add(constraints);
     std::cout << "\t The constraint matrix has been set up! " << std::endl;
@@ -195,7 +200,7 @@ void Model::setDistributedUnitAssignmentConstraints(){
     }
 }
 
-void Model::setPlacementConstraints(){
+void Model::setPlacementDUConstraints(){
     std::cout << "\t > Setting up central unit assignment constraints " << std::endl;
 
     int numOfNodes = lemon::countNodes(data.getGraph());
@@ -213,14 +218,46 @@ void Model::setPlacementConstraints(){
         neighborhood[i][i] = 1;
     }
 
-    cout << "ok";
-    for (int i = 0; i < data.getNbDemands(); i++){
+    for (int idx = 0; idx < data.getNbDemands(); idx++){
+        IloExpr exp(env);
+        int i = data.getDemand(idx).getSource();
+        for (NodeIt n(data.getGraph()); n != lemon::INVALID; ++n){
+            int j = data.getNodeId(n);
+            exp += (neighborhood[i][j] * x_du[i][j]);
+        }
+        std::string name = "Placement(" + std::to_string(idx) + ")";
+        constraints.add(IloRange(env, 1, exp, 1, name.c_str()));
+        exp.clear();
+        exp.end();
+    }
+}
+
+void Model::setPlacementCUConstraints(){
+    std::cout << "\t > Setting up central unit assignment constraints " << std::endl;
+
+    int numOfNodes = lemon::countNodes(data.getGraph());
+
+    int neighborhood[numOfNodes][numOfNodes]={0};
+
+    for (ArcIt l(data.getGraph()); l != lemon::INVALID; ++l){
+        int idx_i = data.getGraph().id(data.getGraph().source(l));
+        int idx_j = data.getGraph().id(data.getGraph().target(l));
+
+        neighborhood[idx_i][idx_j] = 1;
+    }
+
+    for (int i = 0; i < numOfNodes; i++){
+        neighborhood[i][i] = 1;
+    }
+
+    for (int idx = 0; idx < data.getNbDemands(); idx++){
+        int i = data.getDemand(idx).getSource();
         IloExpr exp(env);
         for (NodeIt n(data.getGraph()); n != lemon::INVALID; ++n){
             for (NodeIt nn(data.getGraph()); nn != lemon::INVALID; ++nn){
                 int j = data.getNodeId(n);
                 int k = data.getNodeId(nn);
-                exp += (neighborhood[j][k] * z[i][j][k]);
+                exp += (neighborhood[i][j] * neighborhood[j][k] * z[i][j][k]);
             }
         }
         std::string name = "Placement(" + std::to_string(i) + ")";
@@ -241,7 +278,8 @@ void Model::setLinkCapacityConstraints(){
         int k = data.getGraph().id(data.getGraph().target(l));
         double mu = data.getGraph().id(l);
 
-        for (int i = 0; i < data.getNbDemands(); i++){
+        for (int ii = 0; ii < data.getNbDemands(); ii++){
+            int i = data.getDemand(ii).getSource();
             double lambda = data.getDemand(i).getThroughput();
             exp += lambda * z[i][j][k];
         }
@@ -253,6 +291,61 @@ void Model::setLinkCapacityConstraints(){
     }
 }
 
+void Model::setLinearityConstraints1(){
+    for (int idx = 0; idx < data.getNbDemands(); idx++){
+        int i = data.getDemand(idx).getSource();
+        for(NodeIt n(data.getGraph()); n != lemon::INVALID; ++n) {
+            int j = data.getNodeId(n);
+            for(NodeIt nn(data.getGraph()); nn != lemon::INVALID; ++nn) {
+                IloExpr exp(env);
+                int k = data.getNodeId(nn);
+                exp += 1.0 * z[i][j][k] - 1.0 * x_du[i][j];
+
+                std::string name = "Linearization 1 of (i,j,k)=(" + std::to_string(i) + "," + std::to_string(j) + "," + std::to_string(k) + ")";
+                constraints.add(IloRange(env, -IloInfinity, exp, 0, name.c_str()));
+                exp.clear();
+                exp.end();
+            }
+        }
+    }
+}
+void Model::setLinearityConstraints2(){
+    for (int idx = 0; idx < data.getNbDemands(); idx++){
+        int i = data.getDemand(idx).getSource();
+        for(NodeIt n(data.getGraph()); n != lemon::INVALID; ++n) {
+            int j = data.getNodeId(n);
+            for(NodeIt nn(data.getGraph()); nn != lemon::INVALID; ++nn) {
+                IloExpr exp(env);
+                int k = data.getNodeId(nn);
+                exp += 1.0 * z[i][j][k] - 1.0 * x_cu[i][k];
+
+                std::string name = "Linearization 2 of (i,j,k)=(" + std::to_string(i) + "," + std::to_string(j) + "," + std::to_string(k) + ")";
+                constraints.add(IloRange(env, -IloInfinity, exp, 0, name.c_str()));
+                exp.clear();
+                exp.end();
+            }
+        }
+    }
+}
+
+void Model::setLinearityConstraints3(){
+    for (int idx = 0; idx < data.getNbDemands(); idx++){
+        int i = data.getDemand(idx).getSource();
+        for(NodeIt n(data.getGraph()); n != lemon::INVALID; ++n) {
+            int j = data.getNodeId(n);
+            for(NodeIt nn(data.getGraph()); nn != lemon::INVALID; ++nn) {
+                IloExpr exp(env);
+                int k = data.getNodeId(nn);
+                exp += 1.0 * x_du[i][j] + 1.0 * x_cu[i][k] - 1.0 * z[i][j][k] - 1.0;
+
+                std::string name = "Linearization 2 of (i,j,k)=(" + std::to_string(i) + "," + std::to_string(j) + "," + std::to_string(k) + ")";
+                constraints.add(IloRange(env, -IloInfinity, exp, 0, name.c_str()));
+                exp.clear();
+                exp.end();
+            }
+        }
+    }
+}
 
 
 void Model::run()
@@ -269,7 +362,8 @@ void Model::printResult(){
     
     const int NB_DEMANDS = data.getNbDemands();
     std::cout << "=> Printing solution ..." << std::endl;
-    for (int i = 0; i < NB_DEMANDS; i++) {
+    for (int ii = 0; ii < NB_DEMANDS; ii++) {
+        int i = data.getDemand(ii).getSource();
         std::cout << std::endl << "----------------------------------------------------" << std::endl << std::endl;
         std::cout << "Placement for RU i = " << i+1 << " is : ";
         for (NodeIt n(data.getGraph()); n != lemon::INVALID; ++n){
@@ -281,11 +375,17 @@ void Model::printResult(){
                 }
             }
         }
-        std::cout << std::endl << "and DU installed at nodes : ";
+        std::cout << std::endl << "and (DU,CU) installed at nodes : ";
         for (NodeIt n(data.getGraph()); n != lemon::INVALID; ++n){
             int j = data.getNodeId(n);
             if (cplex.getValue(x_du[i][j]) > 1 - EPS){
                 std::cout << j << ", ";
+            }
+        }
+        for (NodeIt n(data.getGraph()); n != lemon::INVALID; ++n){
+            int k = data.getNodeId(n);
+            if (cplex.getValue(x_cu[i][k]) > 1 - EPS){
+                std::cout << k << endl;
             }
         }
         std::cout << std::endl;
